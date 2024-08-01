@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Layout from './Views/Layout.vue';
+import Layout from './pages/Layout.vue';
 import Toast from 'primevue/toast';
 </script>
 

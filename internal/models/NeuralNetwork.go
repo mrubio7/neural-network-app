@@ -3,14 +3,14 @@ package models
 import "github.com/dathoangnd/gonet"
 
 type NeuralNetwork struct {
-	nn gonet.NN
+	nn *gonet.NN
 }
 
 func NewNeuralNetwork(input int, middle []int, output int, classification bool) *NeuralNetwork {
 	n := gonet.New(input, middle, output, classification)
 
 	return &NeuralNetwork{
-		nn: n,
+		nn: &n,
 	}
 }
 
@@ -20,4 +20,9 @@ func (n *NeuralNetwork) Train(trainData [][]float64, targetData []float64, learn
 		inputs = append(inputs, [][]float64{data, {targetData[i]}})
 	}
 	n.nn.Train(inputs, int(epochs), float64(learningRate), float64(momentumFactor), channel)
+}
+
+func (n *NeuralNetwork) Predict(data []float64) []float64 {
+	res := n.nn.Predict(data)
+	return res
 }

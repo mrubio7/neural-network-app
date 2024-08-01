@@ -1,7 +1,7 @@
 import { createMemoryHistory, createRouter } from 'vue-router'
-import IndexView from './Views/IndexView.vue'
-import NewNeuralNetworkView from './Views/NeuralNetworkViews/NewNeuralNetworkView.vue'
-import Layout from './Views/Layout.vue'
+import IndexPage from './pages/IndexPage.vue'
+import NewNeuralNetworkPage from './pages/new-neural-network/NewNeuralNetworkPage.vue'
+
 
 export const PathRoutes = {
   Home: "/",
@@ -11,8 +11,8 @@ export const PathRoutes = {
 }
 
 const routes = [
-  { path: PathRoutes.Home, component: IndexView },
-  { path: PathRoutes.NewNeuralNetwork, component: NewNeuralNetworkView },
+  { path: PathRoutes.Home, component: IndexPage },
+  { path: PathRoutes.NewNeuralNetwork, component: NewNeuralNetworkPage },
 ]
   
 const router = createRouter({

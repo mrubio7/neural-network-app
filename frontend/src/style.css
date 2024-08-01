@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 html {
-    background-color: rgba(27, 38, 54, 1);
+    background-color: rgb(28, 37, 51);
+    font-size: 14.4px;
     text-align: center;
     color: white;
 }
