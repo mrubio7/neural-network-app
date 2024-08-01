@@ -3,8 +3,12 @@ package main
 import (
 	"RNApp/internal/models"
 	"context"
+	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
 	"strconv"
+	"strings"
 
 	wails "github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -74,12 +78,51 @@ func (a *App) Predict(inputs []string) []float64 {
 	return res
 }
 
-func (a *App) Save(name string) string {
-	return a.nn.Save(name)
+func (a *App) Save(name string, headers []string, indexTarget int, accuracy float64) string {
+	return a.nn.Save(name, headers, indexTarget, accuracy)
 }
 
 func (a *App) Load(name string) string {
 	return a.nn.Load(name)
+}
+
+func (a *App) LoadModels() []any {
+	path := "./models/"
+	var modelsData []any
+
+	// List all files in the directory
+	files, err := os.ReadDir(path)
+	if err != nil {
+		fmt.Println("Error reading directory:", err)
+		return nil
+	}
+
+	for _, file := range files {
+		// Check if the file ends with "__info.json"
+		if strings.HasSuffix(file.Name(), "__info") {
+			// Construct the full path
+			filePath := filepath.Join(path, file.Name())
+
+			// Read the file content
+			data, err := os.ReadFile(filePath)
+			if err != nil {
+				fmt.Println("Error reading file:", err)
+				continue
+			}
+
+			// Deserialize the JSON content into the Info struct
+			var info models.Info
+			err = json.Unmarshal(data, &info)
+			if err != nil {
+				fmt.Println("Error unmarshalling JSON:", err)
+				continue
+			}
+
+			modelsData = append(modelsData, info)
+		}
+	}
+
+	return modelsData
 }
 
 func convertArrayToFloat64(inputs []string) ([]float64, error) {

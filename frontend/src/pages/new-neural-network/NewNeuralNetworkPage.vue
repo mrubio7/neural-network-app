@@ -16,6 +16,7 @@ import PopupTrained from './components/PopupTrained.vue';
 import { ref, watchEffect } from 'vue';
 import TrainedDetails from './components/TrainedDetails.vue';
 import { useToast } from 'primevue/usetoast';
+import { Save } from '../../../wailsjs/go/main/App';
 
 // Global
 const toast = useToast()
@@ -25,6 +26,7 @@ const isTraining = ref(false)
 const isTrained = ref(false)
 const modelName = ref("")
 const modelNamePlaceholder = ref()
+
 // Methods
 const setTrained = async (isT:boolean) => {
     isTraining.value = false
@@ -44,15 +46,20 @@ const handlerTrain = (activateCallback:(nb:string) => void) => {
     InitTrain(setTrained)
 }
 
-const handlerSaveModel = () => {
+const handlerSaveModel = async () => {
     NewNeuralNetworkState.file_name = modelName.value
-    toast.add({summary: "Modelo guardado", severity:'success', detail:"Modelo guardado correctamente"})
+    const target_index = NewNeuralNetworkState.file_headers.indexOf(NewNeuralNetworkState.file_target_field)
+    const res = await Save(NewNeuralNetworkState.file_name, NewNeuralNetworkState.file_headers, target_index, NewNeuralNetworkState.test_result)
+    if (res != "") {
+        toast.add({summary: "Hubo un error", severity:'error', detail:res})
+        return
+    }
+    toast.add({summary: "Modelo guardado", severity:'success', detail:"Modelo guardado correctamente."})
 }
 
 watchEffect(() => {
     modelNamePlaceholder.value = `${(NewNeuralNetworkState.file_headers[NewNeuralNetworkState.file_headers.indexOf(NewNeuralNetworkState.file_target_field)] as string)?.replaceAll(' ', '_')}_${NewNeuralNetworkState.test_result.toFixed(0)}_${new Date().toLocaleDateString().replaceAll('/', '_')}`
 })
-
 </script>
 
 <template>

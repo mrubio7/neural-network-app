@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 
@@ -9,6 +10,13 @@ import (
 
 type NeuralNetwork struct {
 	nn *gonet.NN
+}
+
+type Info struct {
+	Headers     []string `json:"headers"`
+	IndexTarget int      `json:"indexTarget"`
+	Name        string   `json:"name"`
+	Accuracy    float64  `json:"accuracy"`
 }
 
 const path = "./models/"
@@ -34,13 +42,32 @@ func (n *NeuralNetwork) Predict(data []float64) []float64 {
 	return res
 }
 
-func (n *NeuralNetwork) Save(name string) string {
+func (n *NeuralNetwork) Save(name string, headers []string, indexTarget int, accuracy float64) string {
+	path := "./models/" // Define the path as needed
 	err := os.MkdirAll(filepath.Dir(path), os.ModePerm)
 	if err != nil {
 		return err.Error()
 	}
 
 	err = n.nn.Save(path + name)
+	if err != nil {
+		return err.Error()
+	}
+
+	info := Info{
+		Headers:     headers,
+		IndexTarget: indexTarget,
+		Name:        name,
+		Accuracy:    accuracy,
+	}
+
+	infoData, err := json.Marshal(info)
+	if err != nil {
+		return err.Error()
+	}
+
+	infoFilePath := path + name + "__info"
+	err = os.WriteFile(infoFilePath, infoData, 0644)
 	if err != nil {
 		return err.Error()
 	}

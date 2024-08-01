@@ -6,6 +6,10 @@ export function Load(arg1) {
   return window['go']['main']['App']['Load'](arg1);
 }
 
+export function LoadModels() {
+  return window['go']['main']['App']['LoadModels']();
+}
+
 export function NewNeuralNetwork(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) {
   return window['go']['main']['App']['NewNeuralNetwork'](arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
 }
@@ -14,6 +18,6 @@ export function Predict(arg1) {
   return window['go']['main']['App']['Predict'](arg1);
 }
 
-export function Save(arg1) {
-  return window['go']['main']['App']['Save'](arg1);
+export function Save(arg1, arg2, arg3, arg4) {
+  return window['go']['main']['App']['Save'](arg1, arg2, arg3, arg4);
 }
