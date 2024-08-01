@@ -1,10 +1,13 @@
 import {createApp} from 'vue'
+import App from './App.vue'
+import router from './router';
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
-import App from './App.vue'
-import './style.css';
 import { definePreset } from '@primevue/themes';
-import router from './router';
+import ToastService from 'primevue/toastservice';
+import Tooltip from 'primevue/tooltip';
+import './style.css';
+import 'primeicons/primeicons.css'
 
 const MyPreset = definePreset(Aura, {
     semantic: {
@@ -26,12 +29,15 @@ const MyPreset = definePreset(Aura, {
 
 const app = createApp(App);
 
+app.directive('tooltip', Tooltip);
 app.use(PrimeVue, {
     theme: {
         preset: MyPreset
     }
 });
 
-app.use(router)
+app.use(router);
+
+app.use(ToastService);
 
 app.mount('#app')
