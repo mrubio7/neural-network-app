@@ -61,7 +61,6 @@ func (a *App) NewNeuralNetwork(
 		}
 	}
 	wails.EventsEmit(c, `training`, nil)
-
 }
 
 func (a *App) Predict(inputs []string) []float64 {
@@ -73,6 +72,14 @@ func (a *App) Predict(inputs []string) []float64 {
 
 	res := a.nn.Predict(inputFloats)
 	return res
+}
+
+func (a *App) Save(name string) string {
+	return a.nn.Save(name)
+}
+
+func (a *App) Load(name string) string {
+	return a.nn.Load(name)
 }
 
 func convertArrayToFloat64(inputs []string) ([]float64, error) {
