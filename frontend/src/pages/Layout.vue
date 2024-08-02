@@ -30,7 +30,7 @@
         <template #end>
             <div class="flex items-center gap-2">
                 <RouterLink :to="PathRoutes.NewNeuralNetwork">
-                    <Button size="small" icon="pi pi-plus" label="Nueva red neuronal" outlined></Button>
+                    <Button size="small" icon="pi pi-plus" label="Nuevo" outlined></Button>
                 </RouterLink>
             </div>
         </template>

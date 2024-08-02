@@ -9,6 +9,7 @@ import Divider from 'primevue/divider';
 import Tag from 'primevue/tag';
 import NewNeuralNetworkState from '../../new-neural-network/store/state';
 import router, { PathRoutes } from '../../../router';
+import { RouterLink } from 'vue-router';
 
 //Refs
 const models = ref()
@@ -50,7 +51,7 @@ onMounted(() => {
         <template #header>
             <div class="flex justify-between">
                 <span class="text-lg font-semibold">Modelos disponibles</span>
-                <Button icon="pi pi-sync" outlined @click="handlerLoadModels" size="small"/>
+                <Button icon="pi pi-sync mt-0.5" outlined @click="handlerLoadModels" size="small"/>
             </div>
         </template>
         <template #list="slotProps">
@@ -76,6 +77,16 @@ onMounted(() => {
                         </div>
                         <Divider v-if="index !== slotProps.items.length-1" />
                     </div>
+                </div>
+            </div>
+        </template>
+        <template #empty>
+            <div class="p-6">
+                <div class="flex flex-col gap-4">
+                    <span class="text-lg font-semibold text-neutral-600">Aún no tienes ningun modelo disponible</span>
+                    <RouterLink :to="PathRoutes.NewNeuralNetwork">
+                        <Button size="small" label="Crear modelo de red neuronal"></Button>
+                    </RouterLink>
                 </div>
             </div>
         </template>
