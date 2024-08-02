@@ -38,7 +38,6 @@
     <section class="p-10 pb-12 h-max">
         <RouterView />
     </section>
-    
 </template>
 
 <style>
