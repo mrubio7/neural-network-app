@@ -10,6 +10,8 @@ import Tooltip from 'primevue/tooltip';
 import './style.css';
 import 'primeicons/primeicons.css'
 
+export const AppVersion = "v1.1"
+
 const MyPreset = definePreset(Aura, {
     semantic: {
         primary: {

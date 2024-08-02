@@ -19,6 +19,7 @@ const target_selected = ref("")
 const file_percentage = ref(10)
 const isClassification = ref(false)
 const layers_hidden = ref([{ nodes: 4 }, { nodes: 4 }]);
+const layers_input = ref()
 const tooltips = {
     columnPredict: "Columna que la red neuronal intentará predecir.",
     filePercent: "Porcentaje de datos reservados para validar predicciones con resultados conocidos, no utilizados en el entrenamiento.",
@@ -27,6 +28,7 @@ const tooltips = {
 }
 
 watchEffect(() => {
+    layers_input.value = NewNeuralNetworkState.layer_input 
     target_selectors.value = NewNeuralNetworkState.file_headers
 })
 
@@ -97,7 +99,7 @@ watchEffect(() => {
                 <span class="text-left">Capas</span>
             </div>
             <div class="flex gap-2 mt-2 w-full">
-                <InputNumber v-model="NewNeuralNetworkState.layer_input" disabled fluid />
+                <InputNumber v-model="layers_input" disabled fluid />
                 <div class="flex gap-1">
                     <Button icon="pi pi-minus" severity="danger" @click="removeLayer"></Button>
                 </div>

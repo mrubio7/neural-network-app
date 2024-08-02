@@ -66,6 +66,7 @@ export const LoadFile = (file: File | null, toast: ToastServiceMethods | null) =
 				NewNeuralNetworkState.file_data.push(fields);
 			});
 			NewNeuralNetworkState.file_headers = NewNeuralNetworkState.file_data[0]
+			NewNeuralNetworkState.layer_input = NewNeuralNetworkState.file_headers.length - 1
 
 			toast?.add({
 				severity: "success",
