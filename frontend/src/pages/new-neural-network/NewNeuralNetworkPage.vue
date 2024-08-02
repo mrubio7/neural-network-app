@@ -33,7 +33,7 @@ const setTrained = async (isT:boolean) => {
     isTraining.value = false
     isTrained.value = isT
     if (!isT) {
-        toast.add({summary:"Error en el entrenamiento", life:3000, severity:'error', detail:"Ha ocurrido un error en el entrenamiento de la red neuronal."})
+        toast.add({summary:"Error en el entrenamiento", life:3000, closable: true, severity:'error', detail:"Ha ocurrido un error en el entrenamiento de la red neuronal."})
     } else {
         await InitTrainPredicts();
         AnalyzePredicts();
@@ -52,10 +52,10 @@ const handlerSaveModel = async () => {
     const target_index = NewNeuralNetworkState.file_headers.indexOf(NewNeuralNetworkState.file_target_field)
     const res = await Save(NewNeuralNetworkState.file_name, NewNeuralNetworkState.file_headers, target_index, NewNeuralNetworkState.test_result)
     if (res != "") {
-        toast.add({summary: "Hubo un error", severity:'error', detail:res})
+        toast.add({summary: "Hubo un error", severity:'error', detail:res, life:3000, closable: true})
         return
     }
-    toast.add({summary: "Modelo guardado", severity:'success', detail:"Modelo guardado correctamente."})
+    toast.add({summary: "Modelo guardado", severity:'success', detail:"Modelo guardado correctamente.", life:3000, closable: true})
     router.push("/")
 }
 

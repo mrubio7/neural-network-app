@@ -24,6 +24,7 @@ const handleUseModel = (item:any) => {
     NewNeuralNetworkState.file_headers = item.headers
     NewNeuralNetworkState.index_target = item.indexTarget
     NewNeuralNetworkState.file_name = item.name
+    NewNeuralNetworkState.test_result = item.accuracy
     router.push(PathRoutes.Use)
 }
 
