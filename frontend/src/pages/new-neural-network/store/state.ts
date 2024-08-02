@@ -140,7 +140,7 @@ export const AnalyzePredicts = () => {
         return;
     }
 
-    const targetValues = NewNeuralNetworkState.nn_train_data.map(row => row[targetIndex]);
+    const targetValues = NewNeuralNetworkState.nn_test_data.map(row => row[targetIndex]);
 
     let totalDifference = 0;
     let countValidPredictions = 0;
@@ -152,8 +152,7 @@ export const AnalyzePredicts = () => {
             return;
         }
 
-		
-        const difference = (100 - Math.abs((actual - predict) / actual * 100))
+        const difference = Math.abs((actual - predict) / actual * 100)
         totalDifference += difference;
         countValidPredictions++;
     });
