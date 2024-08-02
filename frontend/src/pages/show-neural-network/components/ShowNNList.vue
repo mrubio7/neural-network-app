@@ -8,7 +8,7 @@ import Avatar from 'primevue/avatar';
 import Divider from 'primevue/divider';
 import Tag from 'primevue/tag';
 import NewNeuralNetworkState from '../../new-neural-network/store/state';
-import router from '../../../router';
+import router, { PathRoutes } from '../../../router';
 
 //Refs
 const models = ref()
@@ -19,10 +19,12 @@ const handlerLoadModels = async () => {
     models.value = res
 }
 
-const handleUseModel = (name:string) => {
-    // console.log(name)
-    // Load(name)
-    // router.push("/use")
+const handleUseModel = (item:any) => {
+    Load(item.name)
+    NewNeuralNetworkState.file_headers = item.headers
+    NewNeuralNetworkState.index_target = item.indexTarget
+    NewNeuralNetworkState.file_name = item.name
+    router.push(PathRoutes.Use)
 }
 
 const getKnobColor = (rate:number) => {
@@ -36,8 +38,6 @@ const getKnobColor = (rate:number) => {
             return '#15803d'
     }
 }
-
-
 
 onMounted(() => {
     handlerLoadModels()
@@ -70,7 +70,7 @@ onMounted(() => {
                                 </div>
                             </div>
                             <div class="w-1/12">
-                                <Button label="Usar" @click="handleUseModel(item.name)" />
+                                <Button label="Usar" @click="handleUseModel(item)" />
                             </div>
                         </div>
                         <Divider v-if="index !== slotProps.items.length-1" />

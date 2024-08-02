@@ -83,6 +83,7 @@ func (a *App) Save(name string, headers []string, indexTarget int, accuracy floa
 }
 
 func (a *App) Load(name string) string {
+	a.nn = &models.NeuralNetwork{}
 	return a.nn.Load(name)
 }
 

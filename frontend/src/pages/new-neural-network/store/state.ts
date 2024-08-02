@@ -4,6 +4,8 @@ import { NewNeuralNetwork, Predict } from "../../../../wailsjs/go/main/App";
 import { reactive } from "vue";
 
 const NewNeuralNetworkState = reactive({
+	index_target: 0,
+
 	file_name: "",
 	file_data: Array(undefined),
 	file_headers: Array(undefined),
