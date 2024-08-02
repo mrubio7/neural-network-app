@@ -1,5 +1,5 @@
 import { ToastServiceMethods } from "primevue/toastservice";
-import { EventsOn } from "../../../../wailsjs/runtime/runtime";
+import { EventsOff, EventsOn } from "../../../../wailsjs/runtime/runtime";
 import { NewNeuralNetwork, Predict } from "../../../../wailsjs/go/main/App";
 import { reactive } from "vue";
 
@@ -88,7 +88,8 @@ export const LoadFile = (file: File | null, toast: ToastServiceMethods | null) =
 }
 
 export const InitTrain = (isTrained:(isT:boolean) => void) => {
-	listenTrainingEvent(isTrained)
+	listenTrainingEvent(isTrained, stopListenTrainingEvent)
+	NewNeuralNetworkState.test_result = 0;
 
 	NewNeuralNetworkState.test_predicts = new Array(NewNeuralNetworkState.nn_test_data.length).fill(null);
 	NewNeuralNetworkState.nn_mse = new Array(NewNeuralNetworkState.nn_epochs / 100).fill(-1);
@@ -149,7 +150,8 @@ export const AnalyzePredicts = () => {
             return;
         }
 
-        const difference = Math.abs((predict - actual) / actual) * 100;
+		
+        const difference = (100 - Math.abs((actual - predict) / actual * 100))
         totalDifference += difference;
         countValidPredictions++;
     });
@@ -161,35 +163,32 @@ export const AnalyzePredicts = () => {
 
     const averageDifference = totalDifference / countValidPredictions;
     let precision = 100 - averageDifference;
-	if (precision < 0) {
-		precision = Math.abs(precision) / 2
-	}
-	if (precision > 100) {
-		precision -= 100
-	}
 
-    NewNeuralNetworkState.test_result = Number(Math.abs(precision).toFixed(2));
+    NewNeuralNetworkState.test_result = Number(precision.toFixed(2));
 	predicting = false
 };
 
 
-const listenTrainingEvent = (setTrained: (isT:boolean) => void) => {
-	let temp: number[] = [];
-	let n = 0;
-
-	EventsOn('training', (progress) => {
-		n += 1;
+const listenTrainingEvent = (setTrained: (isT:boolean) => void, callbackStopListen: () => void) => {
+	EventsOn('training', (progress, index) => {
 		if (progress === null) {
 			setTrained(false);
 			return
 		}
-		temp.push(progress);
+
+		if (index == 0) {
+			NewNeuralNetworkState.nn_mse = new Array(NewNeuralNetworkState.nn_epochs / 100);
+		}
 		
-		if (n === NewNeuralNetworkState.nn_epochs / 100) {
-			n = 0;
-			NewNeuralNetworkState.nn_mse = [...temp];
-			temp = [];
+		NewNeuralNetworkState.nn_mse[index] = progress;
+
+		if (index+1 === NewNeuralNetworkState.nn_epochs / 100) {
 			setTrained(true);
+			//callbackStopListen();
 		}
 	});
+}
+
+const stopListenTrainingEvent = () => {
+	EventsOff("training")
 }

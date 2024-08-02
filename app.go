@@ -45,7 +45,6 @@ func (a *App) NewNeuralNetwork(
 	epochs uint16,
 ) {
 	ch := make(chan float64, epochs)
-	defer close(ch)
 
 	nn := models.NewNeuralNetwork(input, hidden, output, isRegression)
 
@@ -56,14 +55,15 @@ func (a *App) NewNeuralNetwork(
 	}
 
 	targetData, trainData := extractTargetData(floatData, targetIndex)
-	nn.Train(trainData, targetData, learningRate, momentumFactor, epochs, ch)
+	go nn.Train(trainData, targetData, learningRate, momentumFactor, epochs, ch)
 	a.nn = nn
 
-	if len(ch) > 0 {
-		for e := range ch {
-			wails.EventsEmit(c, `training`, e)
-		}
+	var i int
+	for e := range ch {
+		wails.EventsEmit(c, `training`, e, i)
+		i++
 	}
+
 	wails.EventsEmit(c, `training`, nil)
 }
 

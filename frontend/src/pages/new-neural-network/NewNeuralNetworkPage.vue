@@ -17,6 +17,7 @@ import { ref, watchEffect } from 'vue';
 import TrainedDetails from './components/TrainedDetails.vue';
 import { useToast } from 'primevue/usetoast';
 import { Save } from '../../../wailsjs/go/main/App';
+import router from '../../router';
 
 // Global
 const toast = useToast()
@@ -55,6 +56,7 @@ const handlerSaveModel = async () => {
         return
     }
     toast.add({summary: "Modelo guardado", severity:'success', detail:"Modelo guardado correctamente."})
+    router.push("/")
 }
 
 watchEffect(() => {

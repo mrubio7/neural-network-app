@@ -49,6 +49,7 @@ const setChartOptions = () => {
 	return {
 		maintainAspectRatio: false,
 		aspectRatio: 2,
+		animation: false,
 		plugins: {
 			legend: {
 				labels: {
